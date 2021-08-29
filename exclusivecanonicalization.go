@@ -151,7 +151,7 @@ func (e ExclusiveCanonicalization) processRecursive(node *etree.Element,
 	for _, child := range node.Child {
 		oldNamespaces := e.namespaces
 		e.namespaces = copyNamespace(oldNamespaces)
-		
+
 		switch child := child.(type) {
 		case *etree.Comment:
 			if !e.WithComments {
@@ -160,7 +160,7 @@ func (e ExclusiveCanonicalization) processRecursive(node *etree.Element,
 		case *etree.Element:
 			e.processRecursive(child, newPrefixesInScope, newDefaultNS)
 		}
-		
+
 		e.namespaces = oldNamespaces
 	}
 }
@@ -196,12 +196,8 @@ func (e ExclusiveCanonicalization) renderAttributes(node *etree.Element,
 	for _, attr := range node.Attr {
 		// include the namespaces if they are in the inclusiveNamespacePrefixList
 		if attr.Space == "xmlns" {
-			if !contains(prefixesInScope, attr.Key) &&
-				contains(e.inclusiveNamespacePrefixList, attr.Key) {
-
-				nsListToRender["xmlns:"+attr.Key] = attr.Value
-				prefixesInScope = append(prefixesInScope, attr.Key)
-			}
+			nsListToRender["xmlns:"+attr.Key] = attr.Value
+			prefixesInScope = append(prefixesInScope, attr.Key)
 		}
 
 		// include namespaces for qualfied attributes
@@ -209,7 +205,7 @@ func (e ExclusiveCanonicalization) renderAttributes(node *etree.Element,
 			attr.Space != "xmlns" &&
 			!contains(prefixesInScope, attr.Space) {
 
-			if attr.Space != "xml"{
+			if attr.Space != "xml" {
 				nsListToRender["xmlns:"+attr.Space] = e.namespaces[attr.Space]
 			}
 
@@ -316,4 +312,3 @@ func copyNamespace(namespaces map[string]string) map[string]string {
 	}
 	return newVersion
 }
-
