@@ -1,4 +1,4 @@
-module github.com/ma314smith/signedxml
+module github.com/dcu/signedxml
 
 go 1.16
 
